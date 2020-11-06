@@ -1,0 +1,6 @@
+{
+    "mainpath":"/data02/data_download/",
+    "datasetname":"Toronto",
+    "coordinates":[43.813320, -79.533858,43.693622, -79.275761],
+    "datas":[{"datasource":0, "zooml":13,"zoomhlist":[13,14]}]
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map[]>
+<Map srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs" maximum-extent="-20037508.34,-20037508.34,20037508.34,20037508.34">
+
+<Parameters>
+  <Parameter name="bounds">-73.81164,40.71395,-73.75671,40.749337</Parameter>
+  <Parameter name="center">-73.79,40.72,17</Parameter>
+  <Parameter name="format">png</Parameter>
+  <Parameter name="minzoom">17</Parameter>
+  <Parameter name="maxzoom">19</Parameter>
+  <Parameter name="name"><![CDATA[gan]]></Parameter>
+</Parameters>
+
+
+<Style name="shanghai" filter-mode="first" >
+  <Rule>
+    <RasterSymbolizer opacity="1" />
+  </Rule>
+</Style>
+<Layer name="shanghai"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>shanghai</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/tifntfw/shanghai.tif]]></Parameter>
+       <Parameter name="type"><![CDATA[gdal]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="shopping-label" filter-mode="first" >
+  <Rule>
+    <TextSymbolizer face-name="unifont Medium" placement-type="simple" placements="S,N,E,W,NE,SE,NW,SW,13" fill="#5f2e82" dy="10" dx="10" ><![CDATA[[name]]]></TextSymbolizer>
+  </Rule>
+</Style>
+<Style name="shopping" filter-mode="first" >
+  <Rule>
+    <MarkersSymbolizer file="/testmapnik/label_png/shopping.png" clip="false" />
+  </Rule>
+</Style>
+<Layer name="shopping"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>shopping</StyleName>
+    <StyleName>shopping-label</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/poi2/shopping.csv]]></Parameter>
+       <Parameter name="encoding"><![CDATA[gb2312]]></Parameter>
+       <Parameter name="type"><![CDATA[csv]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="busstation-symbol" filter-mode="first" >
+  <Rule>
+    <MarkersSymbolizer file="/testmapnik/label_png/bus_station1.png" clip="false" />
+  </Rule>
+</Style>
+<Layer name="busstation"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>busstation-symbol</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/poi2\busstation.csv]]></Parameter>
+       <Parameter name="type"><![CDATA[csv]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="hospital-label" filter-mode="first" >
+  <Rule>
+    <TextSymbolizer face-name="unifont Medium" placement-type="simple" placements="S,N,E,W,NE,SE,NW,SW,15" fill="#222222" clip="false" dy="10" dx="10" ><![CDATA[[name]]]></TextSymbolizer>
+  </Rule>
+</Style>
+<Style name="hospital" filter-mode="first" >
+  <Rule>
+    <MarkersSymbolizer file="/testmapnik/label_png/hospital.png" clip="false" />
+  </Rule>
+</Style>
+<Layer name="hospital"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>hospital</StyleName>
+    <StyleName>hospital-label</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/poi2\hospital.csv]]></Parameter>
+       <Parameter name="encoding"><![CDATA[gb2312]]></Parameter>
+       <Parameter name="type"><![CDATA[csv]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="museum-label" filter-mode="first" >
+  <Rule>
+    <TextSymbolizer face-name="unifont Medium" placement-type="simple" placements="S,N,E,W,NE,SE,NW,SW,13" fill="#222222" clip="false" dy="10" dx="10" ><![CDATA[[name]]]></TextSymbolizer>
+  </Rule>
+</Style>
+<Style name="museum" filter-mode="first" >
+  <Rule>
+    <MarkersSymbolizer file="/testmapnik/label_png/mum1.png" clip="false" />
+  </Rule>
+</Style>
+<Layer name="museum"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>museum</StyleName>
+    <StyleName>museum-label</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/poi2\museum.csv]]></Parameter>
+       <Parameter name="encoding"><![CDATA[gb2312]]></Parameter>
+       <Parameter name="type"><![CDATA[csv]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="school-label" filter-mode="first" >
+  <Rule>
+    <TextSymbolizer face-name="unifont Medium" placement-type="simple" placements="S,N,E,W,NE,SE,NW,SW,13" fill="#222222" dy="10" dx="10" ><![CDATA[[name]]]></TextSymbolizer>
+  </Rule>
+</Style>
+<Style name="school" filter-mode="first" >
+  <Rule>
+    <MarkersSymbolizer file="/testmapnik/label_png/school.png" clip="false" />
+  </Rule>
+</Style>
+<Layer name="school"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>school</StyleName>
+    <StyleName>school-label</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/poi2/school.csv]]></Parameter>
+       <Parameter name="encoding"><![CDATA[gb2312]]></Parameter>
+       <Parameter name="type"><![CDATA[csv]]></Parameter>
+    </Datasource>
+  </Layer>
+
+<Style name="xian-labels" filter-mode="first" >
+  <Rule>
+    <TextSymbolizer face-name="unifont Medium" halo-radius="1" placement="line" fill="#370306" halo-fill="#f9a18d" size="11" ><![CDATA[[name]]]></TextSymbolizer>
+  </Rule>
+</Style>
+<Layer name="xian"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>xian-labels</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[/testmapnik/Cache/osm/edges.shp]]></Parameter>
+       <Parameter name="type"><![CDATA[shape]]></Parameter>
+    </Datasource>
+  </Layer>
+
+</Map>
