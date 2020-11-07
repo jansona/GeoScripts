@@ -425,8 +425,8 @@ def osmdl(coordinates, cache_path):
     rightbottome_lat_deg = coordinates[2]
     rightbottome_lon_deg = coordinates[3]
 
-    deltax=(rightbottome_lon_deg-lefttop_lon_deg)*0.05
-    deltay=(lefttop_lat_deg-rightbottome_lat_deg)*0.05
+    deltax=(rightbottome_lon_deg-lefttop_lon_deg)*0
+    deltay=(lefttop_lat_deg-rightbottome_lat_deg)*0
 
     north = lefttop_lat_deg-deltay
     south = rightbottome_lat_deg+deltay
