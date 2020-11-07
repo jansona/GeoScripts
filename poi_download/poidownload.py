@@ -503,7 +503,7 @@ def takejson(getjson):
     shppath=os.path.join(cache_path,'osm','edges.shp')
     poipath=outdir
     callback=json.dumps({'cachepath':cache_path,'tifpath':tifpath,'tfwpath':tfwpath,
-        'output':output,'tifname':outputname.replace('tfw','tif'),'wnh':wnh})
+        'output':output,'tifname':outputname.replace('tfw','tif'),'wnh':wnh,'coord':coordinates})
 
     
 #    POI类型编码，类型名或者编码都行，具体参见《高德地图POI分类编码表.xlsx》
