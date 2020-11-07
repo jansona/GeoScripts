@@ -19,6 +19,7 @@ def alter_xml(getjson):
     tifname=jsonstring['tifname']
     wnh=jsonstring['wnh']
     output=jsonstring['output']
+    coord=jsonstring['coord']
 
     cachepath=jsonstring['cachepath']
     mod_xml = os.path.join(cachepath,'new.xml')
@@ -106,7 +107,10 @@ def alter_xml(getjson):
 
     map = mapnik.Map(wnh[0],wnh[1])
     mapnik.load_map(map,str(mod_xml))
-    map.zoom_all()
+    #map.zoom_all()
+    bbox=mapnik.Box2d(mapnik.Coord(coord[1],coord[0]),mapnik.Coord(coord[3],coord[2]))
+    mapnik.zoom_to_box(bbox)
+    #mapnik.render_to_file(map,str(tifpath))
     mapnik.render_to_file(map,str(tifpath))
 
     rmtree(str(cachepath))
