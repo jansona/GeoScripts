@@ -11,6 +11,7 @@ import shutil
 import json
 import argparse
 import osmnx as ox
+import shapely
 
 agents = [
     'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36',
@@ -346,8 +347,13 @@ def osmdl(TYPES,coordinates,mainpath,datasetname):
         #print (gdf)
         gdf_save = gdf.applymap(lambda x: str(x) if isinstance(x, list) else x)
         #print (gdf_save)
-        gdf_save=gdf_save.dropna()
-        print(gdf_save.drop(labels='nodes',axis=1))
+        #gdf_save=gdf_save.dropna()
+        #print(gdf_save.drop(labels='nodes',axis=1))
+        polygonindex=[]
+        for i,v in gdf_save['geometry'].items():
+            if not isinstance(v,shapely.geometry.polygon.Polygon):
+                polygonindex.append(i)
+        gdf_save=gdf_save.drop(polygonindex)
         gdf_save.drop(labels='nodes', axis=1).to_file(os.path.join(path,'%s/%s.shp' % (TYPE, TYPE)), driver='Shapefile')
     
     
@@ -356,8 +362,8 @@ def osmdl(TYPES,coordinates,mainpath,datasetname):
         os.makedirs(os.path.join(path,'road'))
 
     ox.io.save_graph_shapefile(G, filepath=os.path.join(path,'road/'), encoding='utf-8')
-    G_projected = ox.project_graph(G)
-    ox.plot_graph(G_projected)
+    #G_projected = ox.project_graph(G)
+    #ox.plot_graph(G_projected)
     
 def takejson(getjson):
     json1=json.loads(getjson)
