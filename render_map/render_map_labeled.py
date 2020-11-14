@@ -109,11 +109,11 @@ def alter_xml(getjson):
     mapnik.load_map(map,str(mod_xml))
     #map.zoom_all()
     bbox=mapnik.Box2d(mapnik.Coord(coord[1],coord[0]),mapnik.Coord(coord[3],coord[2]))
-    mapnik.zoom_to_box(bbox)
+    map.zoom_to_box(bbox)
     #mapnik.render_to_file(map,str(tifpath))
     mapnik.render_to_file(map,str(tifpath))
 
-    rmtree(str(cachepath))
+    # rmtree(str(cachepath))
 
 if __name__ =='__main__':
 

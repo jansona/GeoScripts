@@ -43,7 +43,7 @@ city_code = '150100'
 
 
 ## TODO 3. 高德开放平台密钥
-gaode_key = ['Web_APP_Key_GaoDeMap']
+gaode_key = ['21d10a04887fafe378fcf1140ada5ef3']
 
 # TODO 4.输出数据坐标系,1为高德GCJ20坐标系，2WGS84坐标系，3百度BD09坐标系
 coord = 2
@@ -464,27 +464,39 @@ def takejson(getjson):
     mainpath=json1['mainpath']
     tifpath=json1['tifpath']
     tfwpath=json1['tfwpath']
+    cache_name = json1['originalData']
+    output=json1['output']
     tfwname=tfwpath.split('/')[-1]
-    outputname=tfwname.replace('.','_marked.')
+    outputname=tfwname #.replace('.','_marked.')
     coordinates=readtfw(tfwpath,tifpath)[0:4]
     #print (coordinates)
     wnh=readtfw(tfwpath,tifpath)[4:]
     print (wnh)
 
-    while True:
-        sha = hashlib.sha256()
-        sha.update(str(time.time()).encode('utf-8'))
-        cache_folder = 'Cache_{}'.format(sha.hexdigest())
-        cache_path = os.path.join(mainpath, cache_folder)
+    # while True:
+    #     sha = hashlib.sha256()
+    #     sha.update(str(time.time()).encode('utf-8'))
+    #     cache_folder = 'Cache_{}'.format(sha.hexdigest())
+    #     cache_path = os.path.join(mainpath, cache_folder)
 
-        if not os.path.exists(cache_path):
-            os.mkdir(cache_path)
-            break
+    #     if not os.path.exists(cache_path):
+    #         os.mkdir(cache_path)
+    #         break
 
-    output=json1['output']
+    cache_path = os.path.join(mainpath, cache_name)
+    callback=json.dumps({'cachepath':cache_path,'tifpath':tifpath,'tfwpath':tfwpath,
+        'output':output,'tifname':outputname.replace('tfw','tif'),'wnh':wnh,'coord':coordinates})
+    copyfile(tfwpath,os.path.join(output,outputname))
+
+    if os.path.exists(cache_path):
+        print(cache_path, " already exists")
+        return callback
+    else:
+        os.mkdir(cache_path)
+
     if not os.path.exists(output):
         os.makedirs(output)
-    copyfile(tfwpath,os.path.join(output,outputname))
+
     print (os.path.join(output,outputname))
     if not os.path.exists(cache_path):
         os.makedirs(cache_path)
@@ -502,9 +514,6 @@ def takejson(getjson):
     print (leftup_lat,leftup_lon,rightdown_lat,rightdown_lon)
     shppath=os.path.join(cache_path,'osm','edges.shp')
     poipath=outdir
-    callback=json.dumps({'cachepath':cache_path,'tifpath':tifpath,'tfwpath':tfwpath,
-        'output':output,'tifname':outputname.replace('tfw','tif'),'wnh':wnh,'coord':coordinates})
-
     
 #    POI类型编码，类型名或者编码都行，具体参见《高德地图POI分类编码表.xlsx》
     typs = ['bus','hospital','shopping','museum','school']  # ['企业', '公园', '广场', '风景名胜', '小学']ust eng
@@ -527,6 +536,7 @@ if __name__ == '__main__':
     # jsonstring={'mainpath':'./','tifpath':r'E:\PycharmProject\testmapnik2\tifntfw\shanghairesize.tif','tfwpath':r'E:\PycharmProject\testmapnik2\tifntfw\shanghairesize.tfw','output':'./output'}
     #jsonstring={'mainpath':r'C:\Users\Sweetday\Desktop','tifpath':r'C:\Users\Sweetday\Desktop\EPSG_4326_16\shanghairesize.tif','tfwpath':r'C:\Users\Sweetday\Desktop\EPSG_4326_16\shanghairesize.tfw','output':r'C:\Users\Sweetday\Desktop\output'}
     # json1=json.dumps(jsonstring)
+    print(sys.argv[1])
     callback=takejson(sys.argv[1])
     print (callback)
 
