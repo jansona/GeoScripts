@@ -11,7 +11,7 @@ import shutil
 import json
 import argparse
 import osmnx as ox
-import shapely
+import shapely#这个包单纯为了筛选geodataframe里面的geometry字段
 
 agents = [
     'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36',
@@ -336,7 +336,7 @@ def osmdl(TYPES,coordinates,mainpath,datasetname):
     print ('Begin downloading OSM data of'+str((north,south,east,west)))
     
     for TYPE in TYPES:
-        gdf = ox.geometries.geometries_from_bbox(north, south, east, west, tags={TYPE:True}) #
+        gdf = ox.geometries.geometries_from_bbox(north, south, east, west, tags={TYPE:True}) 
         #print (gdf)
         typepath = os.path.join(path,'%s' % (TYPE))
 
@@ -352,7 +352,7 @@ def osmdl(TYPES,coordinates,mainpath,datasetname):
         polygonindex=[]
         for i,v in gdf_save['geometry'].items():
             if not isinstance(v,shapely.geometry.polygon.Polygon):
-                polygonindex.append(i)
+                polygonindex.append(i)#筛掉不是polygon类型的记录，不然类型混杂不能保存到shapefile
         gdf_save=gdf_save.drop(polygonindex)
         gdf_save.drop(labels='nodes', axis=1).to_file(os.path.join(path,'%s/%s.shp' % (TYPE, TYPE)), driver='Shapefile')
     
