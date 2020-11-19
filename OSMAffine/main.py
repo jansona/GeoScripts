@@ -1,8 +1,5 @@
 # yangzhen
 # 2020.11.10
-
-
-
 import json
 import OsmAffinebyMap as oam
 import compositingonnum as csn
@@ -11,13 +8,19 @@ import os
 import cv2
 import numpy as np
 import shutil
+import argparse
+import hashlib
+import time
+
 
 def cv_imread(file_path):
     cv_img=cv2.imdecode(np.fromfile(file_path,dtype=np.uint8),-1)
     return cv_img
 
+
 def cv_imwrite(filepath,img):
-    cv2.imencode(".tif",img)[1].tofile(filepath)
+    cv2.imencode(".png",img)[1].tofile(filepath)
+
 
 def cutbigimage(rmpath,mappath,outraster,outdir):
     if not os.path.exists(outdir):
@@ -43,15 +46,19 @@ def cutbigimage(rmpath,mappath,outraster,outdir):
         n=n+1
 
 
-
-
-
 def takejson(getjson):
-    json1=json.loads(getjson)
+    jsonstring1=json.loads(getjson)
     #print (json1)
-    rmpath,mappath=csn.takejson(getjson)
+    sha = hashlib.sha256()
+    sha.update(str(time.time()).encode('utf-8'))
+    cacheRootPath = os.path.join(jsonstring1['Cachepath'], 'Cache_{}'.format(sha.hexdigest()))
+    jsonstring1['Cachepath'] = cacheRootPath
+
+    rmpath,mappath=csn.takejson(json.dumps(jsonstring1))
     shp=jsonstring1['shppath']
-    outraster=os.path.join(jsonstring1['Cachepath'],'osm.png')
+
+
+    outraster=os.path.join(cacheRootPath,'osm.png')
     #shp2=os.path.join(jsonstring1['Cachepath'],'edges.shp')
     #s2r.chageproj(shp,shp2)
     s2r.shp2raster(mappath,shp,outraster)
@@ -70,7 +77,15 @@ def takejson(getjson):
     shutil.rmtree(jsonstring1['Cachepath'])
     #cutbigimage(r'F:\Taiwan3\Cache\rm.png',r'F:\Taiwan3\Cache\map.png',r'F:\Taiwan3\Cache\osm2.png',r'F:\Taiwan3\Cache\test')
 
+
 if __name__=='__main__':
-    jsonstring1={'remotepath':'F:/Taiwan3/metadata/谷歌影像无标注/14/14_14aligned','mappath':r'F:/Taiwan3/metadata/谷歌地图无标注/14/14_14aligned','shppath':'F:/Taiwan3/OSM/road/edges.shp','Cachepath':'F:/Taiwan3/Cache'}
-    json1=json.dumps(jsonstring1)
-    takejson(json1)
+    # jsonstring1={'remotepath':'F:/Taiwan3/metadata/谷歌影像无标注/14/14_14aligned',
+    #     'mappath':r'F:/Taiwan3/metadata/谷歌地图无标注/14/14_14aligned',
+    #     'shppath':'F:/Taiwan3/OSM/road/edges.shp','Cachepath':'F:/Taiwan3/Cache'}
+    # json1=json.dumps(jsonstring1)
+    # takejson(json1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_json', type=str, help='输入json字符串')
+    args = parser.parse_args()
+
+    takejson(args.input_json)

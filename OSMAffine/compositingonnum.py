@@ -8,7 +8,7 @@ def cv_imread(file_path):
     return cv_img
 
 def cv_imwrite(filepath,img):
-    cv2.imencode(".tif",img)[1].tofile(filepath)
+    cv2.imencode(".png",img)[1].tofile(filepath)
 
 class imgfile():
     def __init__(self,name,path):
@@ -22,7 +22,11 @@ class imgfile():
 class imgdir:
     def __init__(self,path):
         self.path=path
-        self.filelist=os.listdir(path)
+        self.filelist=[]
+        for filename in os.listdir(path):
+            if not filename.find('.png')==-1:
+                self.filelist.append(filename)
+        # self.filelist = list(filter(lambda x: not filename.find('.png')==-1 ))
 
     def composite(self):
         xlist=[]

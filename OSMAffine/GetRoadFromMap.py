@@ -67,7 +67,7 @@ def GetRoadFromMap(map):
     for i in range(num):
         tmap = np.zeros([rows, cols], dtype=np.uint8)
         tmap[gmap == onlymap[i]] = 255
-        img,contours, m2 = cv2.findContours(tmap,  cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+        contours, m2 = cv2.findContours(tmap,  cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
         # 根据连通域数目进行一次筛选
         cnum = len(contours)
         if (cnum < 2000):
