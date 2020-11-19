@@ -388,7 +388,18 @@ def takejson(getjson):
             mainfunction1 = mainfunction(zoomhlist, zoomllist, mainpath, datasetname, coordinates, datasources)
             mainfunction1.donwloadingandsave()
         else:
-            TYPES = data["TYPES"]
+
+            def convertNum2Name(nums):
+
+                num2name_dict = {
+                    0: 'building',
+                    1: 'water',
+                    2: 'railway'
+                }
+
+                return list(map(lambda n:num2name_dict[n], nums))
+
+            TYPES = convertNum2Name(data["TYPES"])
             osmdl(TYPES,coordinates,mainpath,datasetname)
             
     print ('Downloading Completed')
