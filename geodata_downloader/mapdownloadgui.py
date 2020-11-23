@@ -78,7 +78,7 @@ class maindirtree:
         mainpath=os.path.join(self.path,self.name)
         if not os.path.exists(mainpath):
             os.mkdir(mainpath)
-        path1=os.path.join(mainpath,'metadata')
+        path1=os.path.join(mainpath,'rawdata')
         if not os.path.exists(path1):
             os.mkdir(path1)
         path2=os.path.join(mainpath,'datasets')
