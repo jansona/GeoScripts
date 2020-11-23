@@ -127,7 +127,7 @@ def ShadowsProportion(path:{}):
         #保存阴影比例小于阈值的图片
         filenameout = os.path.join(File_out, namelist[i])
         filenameout2 = os.path.join(File_out2, namelist[i])
-        mapout = mpath.replace('metadata','noshade')
+        mapout = mpath.replace('rawdata','noshade')
         if not os.path.exists(mapout):
             os.makedirs(mapout)
         if iratio < T:
@@ -143,10 +143,10 @@ def takejson(getjson):
 
     path = {}
     path[0] = json1['rpath']
-    path[1] = path[0].replace('metadata','noshade')
+    path[1] = path[0].replace('rawdata','noshade')
     path[2] = json1['shadowProportion']
     path[3]=json1['mpath']
-    path[4]=path[0].replace('metadata','withshade')
+    path[4]=path[0].replace('rawdata','withshade')
     #print (path)
     ShadowsProportion(path)
 
