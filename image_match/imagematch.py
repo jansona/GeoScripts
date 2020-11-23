@@ -21,6 +21,7 @@ class inputpath():
         self.datatype=self.pathlist[-4]
         self.mainpath='/'.join(self.pathlist[0:-4])
         self.zoompath='/'.join(self.pathlist[-3:])
+        self.zoompath1='/'.join(self.pathlist[-2:])
 
         print (self.mainpath,self.zoompath)
 
@@ -170,7 +171,10 @@ def GetOverlapArea(jsonpath):
             copyfile(skybroundmappath + '/' + nskybroundmaplist[i, j],
                      nskybroundmappath + '/' + nskybroundmaplist[i, j])
 
-
+    nfilenamelist=[]
+    for file in os.listdir(ngoogleimgpath):
+        if not file.find('.png')==-1:
+            nfilenamelist.append(file)
 
 
 
