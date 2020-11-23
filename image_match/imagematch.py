@@ -6,7 +6,7 @@ import json
 import os
 import cv2
 import numpy as np
-from shutil import copyfile
+from shutil import copyfile,rmtree
 import argparse
 
 class inputpath():
@@ -175,13 +175,17 @@ def GetOverlapArea(jsonpath):
     for file in os.listdir(ngoogleimgpath):
         if not file.find('.png')==-1:
             nfilenamelist.append(file)
-    pairpath='/'.join([mainoutpath,mainoutpath2,mainoutpath3,inputpath1.zoompath1])      
+    pairpath='/'.join([mainoutpath,mainoutpath2,mainoutpath3,mainoutpath3,inputpath1.zoompath1]) 
+    if not os.exists(pairpath):
+        os.makedirs(pairpath)
     for file in nfilenamelist:
         img2=cv_imread(os.path.join(nskybroundmappath,file))
         img1=cv_imread(os.path.join(ngoogleimgpath,file))
         #img3=cv_imread(os.path.join(nskybroundimgpath,file))
         imgpair=np.hstack([img1,img2])
-        cv2.imwrite(os.path.join(imgpair,file),imgpair)
+        cv2.imwrite(os.path.join(pairpath,file),imgpair)
+        
+    
         
 
 
