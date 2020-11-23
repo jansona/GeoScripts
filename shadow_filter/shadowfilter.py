@@ -93,15 +93,18 @@ def ShadowsProportion(path:{}):
     File_out = path[1] 
     T = path[2]
     mpath = path[3]
+    File_out2=path[4]
     if not os.path.exists(File_out):
         os.makedirs(File_out)
+    if not os.path.exists(File_out2):
+        os.makedirs(File_out2)
     #开始检测
     namelist=[]
     for filename in os.listdir(File_in):
         if not filename.find('.png') == -1:
             namelist.append(filename)
     n = len(namelist)
-    #fid = open('ShadowsProportion.txt', 'w')
+    fid = open('ShadowsProportion.txt', 'w')
     for i in range(n):
         filenamein = os.path.join(File_in, namelist[i])
         img = cv_imread(filenamein)
@@ -120,16 +123,19 @@ def ShadowsProportion(path:{}):
         S = shadow.size
         s = np.sum(sum(shadow))
         iratio = s/S
-        #fid.write(namelist[i] + ',' + str('%.3f' % iratio) + '\n')
+        fid.write(namelist[i] + ',' + str('%.3f' % iratio) + '\n')
         #保存阴影比例小于阈值的图片
         filenameout = os.path.join(File_out, namelist[i])
+        filenameout2 = os.path.join(File_out2, namelist[i])
         mapout = mpath.replace('metadata','noshade')
         if not os.path.exists(mapout):
             os.makedirs(mapout)
         if iratio < T:
             cv_imwrite(filenameout, img)
             copyfile(os.path.join(mpath,namelist[i]),(os.path.join(mapout,namelist[i])))
-    #fid.close()
+        else :
+            cv_imwrite(filenameout2, img)
+    fid.close()
 
 
 def takejson(getjson):
@@ -140,6 +146,7 @@ def takejson(getjson):
     path[1] = path[0].replace('metadata','noshade')
     path[2] = json1['shadowProportion']
     path[3]=json1['mpath']
+    path[4]=path[0].replace('metadata','withshade')
     #print (path)
     ShadowsProportion(path)
 
