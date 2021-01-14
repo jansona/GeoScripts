@@ -176,7 +176,7 @@ def GetOverlapArea(jsonpath):
         if not file.find('.png')==-1:
             nfilenamelist.append(file)
     pairpath='/'.join([mainoutpath,mainoutpath2,mainoutpath3,mainoutpath3,inputpath1.zoompath1]) 
-    if not os.exists(pairpath):
+    if not os.path.exists(pairpath):
         os.makedirs(pairpath)
     for file in nfilenamelist:
         img2=cv_imread(os.path.join(nskybroundmappath,file))

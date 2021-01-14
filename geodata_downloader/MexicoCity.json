@@ -1,0 +1,6 @@
+{
+    "mainpath":"./",
+    "datasetname":"MexicoCity",
+    "coordinates":[19.46813126352361, -99.1715516674479, 19.367872139566607, -99.06],
+    "datas":[{"datasource":17, "zooml":13,"zoomhlist":[13]},{"datasource":0, "zooml":13,"zoomhlist":[13]}]
+}
