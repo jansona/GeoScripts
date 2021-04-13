@@ -15,6 +15,8 @@ import random
 import shutil
 import json
 import argparse
+from coord_trans_utils import gcj02_to_wgs84
+
 
 import osmnx as ox
 import shapely#这个包单纯为了筛选geodataframe里面的geometry字段
@@ -230,14 +232,20 @@ class MainFunc(object):
             maindirs = mdtree.mk_main_dir()
             xandytile1 = XnYTile('coordinate', self.coordinates)
             zoomlist1 = self.zoom_list
+
+            coords = list([x, y] for x, y in zip(xandytile1.xandyrange(zoom)[0], xandytile1.xandyrange(zoom)[1]))
+            new_coords = list(map(lambda p: gcj02_to_wgs84(p), coords))
+
             for source in self.tileSources:
                 imgurl = ImgUrls(url_sources[source][0], url_sources[source][1])
                 source = imgurl.mk_type_dir(maindirs)
                 for zoom in self.zoom_list:
                     zoom_dir = mk_zoom_dir(zoom, source)  # 生成层级文件夹
-                    for x in xandytile1.xandyrange(zoom)[0]:  # 下载多层级元数据
+                    for p in new_coords:  # 下载多层级元数据
+                        x = p[0]
                         img_dir = mk_img_dir(zoom, x, source)
-                        for y in xandytile1.xandyrange(zoom)[1]:
+                        for p in new_coords:
+                            y = p[1]
                             datafile1 = DataFile(img_dir, x, y, zoom)
                             datafile1.downloadflie(imgurl.gettpath(x, y, zoom))
             print("SUCCESS")
