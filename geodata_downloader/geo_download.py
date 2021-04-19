@@ -15,7 +15,7 @@ import random
 import shutil
 import json
 import argparse
-from coord_trans_utils import gcj02_to_wgs84
+from coord_trans_utils import gcj02_to_wgs84, wgs84_to_gcj02
 
 
 import osmnx as ox
@@ -146,10 +146,10 @@ class DataFile(object):
                 pic = urllib.request.urlopen(req, timeout=60)
                 f.write(pic.read())
                 f.close()
-                print(str(self.x) + '_' + str(self.y) + ' downloading success', flush=True)
+                # print(str(self.x) + '_' + str(self.y) + ' downloading success', flush=True)
                 break
             except Exception:
-                print(str(self.x) + '_' + str(self.y) + ' downloading fail,retrying', flush=True)
+                print(str(self.x) + '_' + str(self.y) + ' downloading fail, retrying', flush=True)
                 print('retrying' + str(a + 1), flush=True)
                 continue
 
@@ -161,7 +161,7 @@ class DataFile(object):
                 try:
                     im = cv_imread(self.spath)
                     conf_value = im.shape
-                    print(str(self.spath) + ' has been downloaded', flush=True)
+                    # print(str(self.spath) + ' has been downloaded', flush=True)
                     n = 3
                 except Exception:
                     print(str(self.spath) + ' cannot be read', flush=True)
@@ -175,7 +175,7 @@ class DataFile(object):
                 try:
                     im = cv_imread(self.spath)
                     conf_value = im.shape
-                    print(str(self.spath) + ' has been downloaded', flush=True)
+                    # print(str(self.spath) + ' has been downloaded', flush=True)
                     n = 3
                 except Exception:
                     print(str(self.spath) + ' cannot be read', flush=True)
@@ -230,27 +230,39 @@ class MainFunc(object):
             print("Begin download tiles")
             mdtree = MainDirTree(self.mainpath, self.sampleSetId)
             maindirs = mdtree.mk_main_dir()
+
+            print("self.coordinates:", self.coordinates)
+
             xandytile1 = XnYTile('coordinate', self.coordinates)
             zoomlist1 = self.zoom_list
-
-            coords = list([x, y] for x, y in zip(xandytile1.xandyrange(zoom)[0], xandytile1.xandyrange(zoom)[1]))
-            new_coords = list(map(lambda p: gcj02_to_wgs84(p), coords))
 
             for source in self.tileSources:
                 imgurl = ImgUrls(url_sources[source][0], url_sources[source][1])
                 source = imgurl.mk_type_dir(maindirs)
                 for zoom in self.zoom_list:
                     zoom_dir = mk_zoom_dir(zoom, source)  # 生成层级文件夹
-                    for p in new_coords:  # 下载多层级元数据
-                        x = p[0]
+
+                    for x, y in zip(xandytile1.xandyrange(zoom)[0], xandytile1.xandyrange(zoom)[1]):
+                        
+                        if False:#source in [19]:
+                            new_x, new_y = wgs84_to_gcj02(x, y)
+                            print("校正ing", new_x, new_y, x, y)
+                        else:
+                            new_x, new_y = x, y
+
                         img_dir = mk_img_dir(zoom, x, source)
-                        for p in new_coords:
-                            y = p[1]
-                            datafile1 = DataFile(img_dir, x, y, zoom)
-                            datafile1.downloadflie(imgurl.gettpath(x, y, zoom))
+                        datafile1 = DataFile(img_dir, x, y, zoom)
+                        datafile1.downloadflie(imgurl.gettpath(new_x, new_y, zoom))
+                    # for p in new_coords:  # 下载多层级元数据
+                    #     x = p[0]
+                    #     img_dir = mk_img_dir(zoom, x, source)
+                    #     for p in new_coords:
+                    #         y = p[1]
+                    #         datafile1 = DataFile(img_dir, x, y, zoom)
+                    #         datafile1.downloadflie(imgurl.gettpath(x, y, zoom))
             print("SUCCESS")
-        except Exception:
-            print("ERROR")
+        except Exception as e:
+            print(e)
            
 
 def osmdl(TYPES,coordinates,mainpath,sampleSetId):

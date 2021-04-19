@@ -436,7 +436,10 @@ if __name__ == "__main__":
     # ratioofdataset=[1,3,3]#int list,test,pair,unpair’s ratio
     # mainfunction1=mainfunction(zoomhlist,zoomllist,mainpath,datasetname,coordinates,datasources)
     # mainfunction1.donwloadingandsave(ratioofdataset)
-    # jsonstring={"mainpath":"/data02/data_download/", "datasetname":"Toronto", "coordinates":[43.813320, -79.533858,43.693622, -79.275761],"datas":[{"datasource":0, 'zooml':13,'zoomhlist':[13,14]}]}
+    # jsonstring={
+    #     "mainpath":"/data02/data_download/", "datasetname":"Toronto", 
+    #     "coordinates":[43.813320, -79.533858,43.693622, -79.275761],
+    #     "datas":[{"datasource":0, 'zooml':13,'zoomhlist':[13,14]}]}
     with open(sys.argv[1], 'r', encoding='utf-8') as fin:
         lines = fin.readlines()
     json_str = ' '.join(lines)
